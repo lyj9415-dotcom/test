@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신나고 안전한 실습실! 초등학생 안전 수칙 가이드</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Google Fonts (Gaegu & Nanum Gothic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@700&family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandYellow: '#FFDE59',
+                        brandOrange: '#FF914D',
+                        brandGreen: '#7ED957',
+                        brandBlue: '#5271FF',
+                        brandPink: '#FF66C4',
+                        softBg: '#FFF9EF',
+                    },
+                    fontFamily: {
+                        gaegu: ['Gaegu', 'cursive'],
+                        sans: ['Nanum Gothic', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Nanum Gothic', sans-serif;
+            background-color: #FFF9EF;
+            background-image: radial-gradient(#FFDE59 1.5px, transparent 1.5px);
+            background-size: 24px 24px;
+        }
+
+        .font-gaegu {
+            font-family: 'Gaegu', cursive;
+        }
+
+        /* Bounce effect for buttons */
+        .bounce-hover:hover {
+            transform: translateY(-4px) scale(1.02);
+            transition: all 0.2s ease-in-out;
+        }
+
+        /* Speech Bubble Tail */
+        .speech-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 15px 15px 0;
+            border-style: solid;
+            border-color: #ffffff transparent;
+            display: block;
+            width: 0;
+        }
+
+        /* Custom Checkbox Animation */
+        .custom-checkbox:checked + label .check-icon {
+            display: flex;
+        }
+
+        /* Smooth tab transition */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="text-gray-800 antialiased min-h-screen pb-12">
+
+    <!-- Header Banner -->
+    <header class="bg-gradient-to-r from-brandOrange via-brandYellow to-brandGreen p-6 rounded-b-3xl shadow-lg border-b-4 border-yellow-500 relative overflow-hidden">
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+            <div class="inline-block bg-white text-orange-600 font-extrabold px-4 py-1.5 rounded-full text-sm sm:text-base mb-3 shadow-md border-2 border-orange-200">
+                <i class="fa-solid fa-hard-hat mr-1 animate-bounce"></i> 슬기로운 실습 생활
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-extrabold text-white tracking-wide drop-shadow-md font-gaegu">
+                안전은 챙기고! 재미는 더하고! 🛠️✨
+            </h1>
+            <p class="text-white font-bold text-base sm:text-lg mt-2 drop-shadow-sm">
+                초등학생을 위한 신나고 안전한 실습·체험 약속
+            </p>
+        </div>
+        <!-- Decorative Shapes -->
+        <div class="absolute -top-6 -left-6 w-20 h-20 bg-white/20 rounded-full blur-sm"></div>
+        <div class="absolute -bottom-8 -right-8 w-28 h-28 bg-white/20 rounded-full blur-sm"></div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 mt-6 space-y-8">
+
+        <!-- Character Welcome Card -->
+        <section class="bg-white rounded-3xl p-5 sm:p-6 shadow-md border-4 border-orange-200 flex flex-col md:flex-row items-center gap-4 relative">
+            <div class="w-24 h-24 sm:w-28 sm:h-28 bg-brandYellow rounded-full flex items-center justify-center border-4 border-orange-300 shadow-inner shrink-0">
+                <span class="text-5xl sm:text-6xl">👷‍♂️</span>
+            </div>
+            <div class="flex-1 text-center md:text-left">
+                <div class="flex items-center justify-center md:justify-start gap-2 mb-1">
+                    <h2 class="text-2xl font-bold text-gray-800 font-gaegu">안전 지킴이 '안전이'선생님</h2>
+                    <button id="ttsBtn" onclick="readWelcomeText()" class="bg-brandBlue text-white text-xs px-3 py-1.5 rounded-full font-bold shadow hover:bg-blue-600 transition flex items-center gap-1">
+                        <i class="fa-solid fa-volume-high"></i> 목소리 듣기
+                    </button>
+                </div>
+                <p id="welcomeText" class="text-gray-700 font-medium leading-relaxed text-sm sm:text-base">
+                    안녕, 친구들! 오늘 멋진 작품을 만들 준비가 되었나요? 실습실은 정말 재미있지만 다치지 않고 다 함께 안전하게 즐기는 게 가장 중요해요! 아래 안전 수칙들을 하나씩 확인해 봐요!
+                </p>
+            </div>
+        </section>
+
+        <!-- Interactive Checklist Section -->
+        <section class="bg-white rounded-3xl p-6 shadow-md border-4 border-brandYellow">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-yellow-100 pb-4 mb-4">
+                <div class="flex items-center gap-3">
+                    <span class="text-3xl">📋</span>
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800 font-gaegu">실습 시작 전! 나의 안전 체크리스트</h2>
+                        <p class="text-xs sm:text-sm text-gray-5 머리">준비가 끝난 항목에 하나씩 체크해 보세요!</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span id="checklistProgressText" class="text-sm font-bold text-orange-500 bg-orange-50 px-3 py-1 rounded-full border border-orange-200">
+                        0 / 5 완성
+                    </span>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3" id="checklistContainer">
+                <!-- Checklist Items -->
+                <div class="flex items-center p-3 bg-yellow-50 rounded-2xl border-2 border-yellow-200 hover:bg-yellow-100 transition cursor-pointer" onclick="toggleCheck('check1')">
+                    <input type="checkbox" id="check1" class="hidden custom-checkbox" onchange="updateChecklistProgress()">
+                    <label for="check1" class="flex items-center gap-3 w-full cursor-pointer select-none">
+                        <div class="w-7 h-7 rounded-lg bg-white border-2 border-yellow-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-check text-orange-500 text-lg hidden check-icon"></i>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm sm:text-base">👚 단정한 옷을 입고 긴 머리는 묶었어요</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center p-3 bg-yellow-50 rounded-2xl border-2 border-yellow-200 hover:bg-yellow-100 transition cursor-pointer" onclick="toggleCheck('check2')">
+                    <input type="checkbox" id="check2" class="hidden custom-checkbox" onchange="updateChecklistProgress()">
+                    <label for="check2" class="flex items-center gap-3 w-full cursor-pointer select-none">
+                        <div class="w-7 h-7 rounded-lg bg-white border-2 border-yellow-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-check text-orange-500 text-lg hidden check-icon"></i>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm sm:text-base">🥽 보안경과 장갑 등 보호구를 썼어요</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center p-3 bg-yellow-50 rounded-2xl border-2 border-yellow-200 hover:bg-yellow-100 transition cursor-pointer" onclick="toggleCheck('check3')">
+                    <input type="checkbox" id="check3" class="hidden custom-checkbox" onchange="updateChecklistProgress()">
+                    <label for="check3" class="flex items-center gap-3 w-full cursor-pointer select-none">
+                        <div class="w-7 h-7 rounded-lg bg-white border-2 border-yellow-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-check text-orange-500 text-lg hidden check-icon"></i>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm sm:text-base">💧 손에 물기를 뽀송뽀송하게 말렸어요</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center p-3 bg-yellow-50 rounded-2xl border-2 border-yellow-200 hover:bg-yellow-100 transition cursor-pointer" onclick="toggleCheck('check4')">
+                    <input type="checkbox" id="check4" class="hidden custom-checkbox" onchange="updateChecklistProgress()">
+                    <label for="check4" class="flex items-center gap-3 w-full cursor-pointer select-none">
+                        <div class="w-7 h-7 rounded-lg bg-white border-2 border-yellow-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-check text-orange-500 text-lg hidden check-icon"></i>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm sm:text-base">🔍 도구나 전선이 고장 나지 않았는지 봤어요</span>
+                    </label>
+                </div>
+
+                <div class="flex items-center p-3 bg-yellow-50 rounded-2xl border-2 border-yellow-200 hover:bg-yellow-100 transition cursor-pointer sm:col-span-2" onclick="toggleCheck('check5')">
+                    <input type="checkbox" id="check5" class="hidden custom-checkbox" onchange="updateChecklistProgress()">
+                    <label for="check5" class="flex items-center gap-3 w-full cursor-pointer select-none">
+                        <div class="w-7 h-7 rounded-lg bg-white border-2 border-yellow-400 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-check text-orange-500 text-lg hidden check-icon"></i>
+                        </div>
+                        <span class="font-bold text-gray-700 text-sm sm:text-base">🙋‍♂️ 다치거나 위험할 땐 즉시 "선생님!" 부르기로 약속해요</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Complete Banner Message -->
+            <div id="checklistCompleteBanner" class="hidden mt-4 p-4 bg-green-100 border-2 border-green-400 rounded-2xl text-center">
+                <p class="font-bold text-green-800 text-base sm:text-lg">
+                    🎉 멋져요! 모든 점검을 완료했어요. 이제 안전하게 시작해 볼까요?
+                </p>
+            </div>
+        </section>
+
+        <!-- Tabbed Safety Rules Section -->
+        <section class="bg-white rounded-3xl p-6 shadow-md border-4 border-brandBlue">
+            <h2 class="text-2xl font-bold text-gray-800 font-gaegu mb-4 flex items-center gap-2">
+                <span>🛡️</span> 핵심 안전 약속 4가지
+            </h2>
+
+            <!-- Navigation Buttons -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-6">
+                <button onclick="switchTab('tab1')" id="btn-tab1" class="tab-btn active bg-brandBlue text-white font-bold py-3 px-2 rounded-2xl shadow transition text-sm sm:text-base flex flex-col items-center gap-1 border-2 border-blue-600">
+                    <span class="text-xl">👕</span> 1. 복장과 장비
+                </button>
+                <button onclick="switchTab('tab2')" id="btn-tab2" class="tab-btn bg-gray-100 text-gray-600 font-bold py-3 px-2 rounded-2xl hover:bg-blue-50 transition text-sm sm:text-base flex flex-col items-center gap-1 border-2 border-gray-200">
+                    <span class="text-xl">⚡</span> 2. 전기 안전
+                </button>
+                <button onclick="switchTab('tab3')" id="btn-tab3" class="tab-btn bg-gray-100 text-gray-600 font-bold py-3 px-2 rounded-2xl hover:bg-blue-50 transition text-sm sm:text-base flex flex-col items-center gap-1 border-2 border-gray-200">
+                    <span class="text-xl">🚨</span> 3. 비상 대피
+                </button>
+                <button onclick="switchTab('tab4')" id="btn-tab4" class="tab-btn bg-gray-100 text-gray-600 font-bold py-3 px-2 rounded-2xl hover:bg-blue-50 transition text-sm sm:text-base flex flex-col items-center gap-1 border-2 border-gray-200">
+                    <span class="text-xl">🧹</span> 4. 정리정돈
+                </button>
+            </div>
+
+            <!-- Tab Content 1: 복장 및 장비 -->
+            <div id="tab1" class="tab-content active p-5 bg-blue-50 rounded-2xl border-2 border-blue-200">
+                <h3 class="text-xl font-bold text-brandBlue mb-3 font-gaegu flex items-center gap-2">
+                    <span>🥽</span> 1. 작업 전 확인 (복장 및 보호구)
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">👔</span>
+                        <div>
+                            <strong class="text-gray-800 block">단정한 옷을 입어요</strong>
+                            <span class="text-sm text-gray-600">소매가 긴 옷은 잘 걷어 올리고, 긴 머리는 기계에 걸리지 않게 묶어 주세요.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">💍</span>
+                        <div>
+                            <strong class="text-gray-800 block">장신구는 잠시 안녕!</strong>
+                            <span class="text-sm text-gray-600">반지, 목걸이, 팔찌는 실습 도중에 걸릴 수 있으니 가방에 쏙 넣어둬요.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">🧤</span>
+                        <div>
+                            <strong class="text-gray-800 block">보호구를 바르게 착용해요</strong>
+                            <span class="text-sm text-gray-600">눈을 보호하는 보안경, 손을 보호하는 장갑, 먼지를 막아주는 마스크를 써요.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">🔎</span>
+                        <div>
+                            <strong class="text-gray-800 block">도구 상태 살펴보기</strong>
+                            <span class="text-sm text-gray-600">가위나 풀, 도구가 금이 가거나 부러지지 않았는지 쓰기 전에 확인해요.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tab Content 2: 전기 안전 -->
+            <div id="tab2" class="tab-content p-5 bg-yellow-50 rounded-2xl border-2 border-yellow-200">
+                <h3 class="text-xl font-bold text-yellow-700 mb-3 font-gaegu flex items-center gap-2">
+                    <span>⚡</span> 2. 감전 예방 (전기 안전)
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">💦</span>
+                        <div>
+                            <strong class="text-gray-800 block">젖은 손으로 절대 만지지 않기!</strong>
+                            <span class="text-sm text-gray-600">손에 물이 묻어 있으면 전기가 잘 통해요. 뽀송뽀송하게 닦은 후 만져요.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">🔌</span>
+                        <div>
+                            <strong class="text-gray-800 block">플러그는 머리(몸체)를 잡고 뽑아요</strong>
+                            <span class="text-sm text-gray-600">줄(전선)을 세게 잡아당기면 안 돼요! 머리 부분을 잡고 살살 뽑아 주세요.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">⚠️</span>
+                        <div>
+                            <strong class="text-gray-800 block">피복이 벗겨진 전선은 신고해요</strong>
+                            <span class="text-sm text-gray-600">전선 속 까만 줄이나 금속이 보이면 위험해요. 손대지 말고 선생님께 말씀하세요.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tab Content 3: 비상 대피 -->
+            <div id="tab3" class="tab-content p-5 bg-red-50 rounded-2xl border-2 border-red-200">
+                <h3 class="text-xl font-bold text-red-600 mb-3 font-gaegu flex items-center gap-2">
+                    <span>🚨</span> 3. 비상 상황 대응 (위험할 때)
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">🗣️</span>
+                        <div>
+                            <strong class="text-gray-800 block">다치면 즉시 "선생님!" 부르기</strong>
+                            <span class="text-sm text-gray-600">작은 상처나 까진 것도 참지 말고 바로 선생님께 이야기해요.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">✋</span>
+                        <div>
+                            <strong class="text-gray-800 block">위험할 땐 도구를 놓아두기</strong>
+                            <span class="text-sm text-gray-600">놀라거나 위험한 상황이 생기면 들고 있던 가위나 도구를 살며시 내려놓아요.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">🏃‍♂️</span>
+                        <div>
+                            <strong class="text-gray-800 block">비상시엔 질서 있게 대피해요</strong>
+                            <span class="text-sm text-gray-600">불이 나거나 사이렌이 울리면 물건을 챙기지 말고 선생님 안내에 따라 줄을 서서 비상구로 가요.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Tab Content 4: 정리정돈 -->
+            <div id="tab4" class="tab-content p-5 bg-green-50 rounded-2xl border-2 border-green-200">
+                <h3 class="text-xl font-bold text-green-700 mb-3 font-gaegu flex items-center gap-2">
+                    <span>🧹</span> 4. 정리정돈 (실습을 마친 후)
+                </h3>
+                <ul class="space-y-3">
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">📦</span>
+                        <div>
+                            <strong class="text-gray-800 block">사용한 도구는 제자리에!</strong>
+                            <span class="text-sm text-gray-600">가위, 풀, 색연필 등 쓴 물건은 바구니나 정리함에 다시 모아 주세요.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">🗑️</span>
+                        <div>
+                            <strong class="text-gray-800 block">책상과 바닥을 깨끗이 정리해요</strong>
+                            <span class="text-sm text-gray-600">종이 조각이나 바닥에 떨어진 쓰레기는 쓰레기통에 쏙 버려 줍니다.</span>
+                        </div>
+                    </li>
+                    <li class="flex items-start gap-3 bg-white p-3 rounded-xl shadow-sm">
+                        <span class="text-2xl">💡</span>
+                        <div>
+                            <strong class="text-gray-800 block">스위치 끄기 확인하기</strong>
+                            <span class="text-sm text-gray-600">실습이 끝나면 전원 버튼이 잘 꺼졌는지 확인하고 깔끔하게 교실을 나가요.</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Interactive Quiz Section -->
+        <section class="bg-white rounded-3xl p-6 shadow-md border-4 border-brandPink">
+            <div class="flex items-center gap-3 border-b-2 border-pink-100 pb-3 mb-4">
+                <span class="text-3xl">🧩</span>
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800 font-gaegu">재미있는 팡팡 안전 퀴즈!</h2>
+                    <p class="text-xs sm:text-sm text-gray-500">배운 내용을 얼마나 기억하는지 문제로 풀어봐요!</p>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Q1 -->
+                <div class="p-4 bg-pink-50 rounded-2xl border border-pink-200">
+                    <p class="font-bold text-gray-800 mb-3 text-base sm:text-lg">
+                        Q1. 전기 플러그를 콘센트에서 뽑을 때 바른 방법은 무엇일까요?
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="q1Options">
+                        <button onclick="checkAnswer(1, false, this)" class="p-3 bg-white text-left font-semibold rounded-xl border border-gray-200 hover:bg-pink-100 transition text-sm">
+                            ① 전선 줄을 세게 잡아당겨서 뽑는다.
+                        </button>
+                        <button onclick="checkAnswer(1, true, this)" class="p-3 bg-white text-left font-semibold rounded-xl border border-gray-200 hover:bg-pink-100 transition text-sm">
+                            ② 플러그의 딱딱한 머리(몸체)를 잡고 뽑는다.
+                        </button>
+                    </div>
+                    <div id="q1Feedback" class="hidden mt-2 font-bold text-sm p-2 rounded-lg"></div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="p-4 bg-pink-50 rounded-2xl border border-pink-200">
+                    <p class="font-bold text-gray-800 mb-3 text-base sm:text-lg">
+                        Q2. 실습 중 손을 베이거나 아주 살짝 다쳤을 때 어떻게 해야 할까요?
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="q2Options">
+                        <button onclick="checkAnswer(2, true, this)" class="p-3 bg-white text-left font-semibold rounded-xl border border-gray-200 hover:bg-pink-100 transition text-sm">
+                            ① 참지 말고 즉시 "선생님!" 하고 부른다.
+                        </button>
+                        <button onclick="checkAnswer(2, false, this)" class="p-3 bg-white text-left font-semibold rounded-xl border border-gray-200 hover:bg-pink-100 transition text-sm">
+                            ② 친구들에게 안 다친 척 숨긴다.
+                        </button>
+                    </div>
+                    <div id="q2Feedback" class="hidden mt-2 font-bold text-sm p-2 rounded-lg"></div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="p-4 bg-pink-50 rounded-2xl border border-pink-200">
+                    <p class="font-bold text-gray-800 mb-3 text-base sm:text-lg">
+                        Q3. 긴 머리를 한 친구가 실습할 때 지켜야 할 약속은 무엇일까요?
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="q3Options">
+                        <button onclick="checkAnswer(3, false, this)" class="p-3 bg-white text-left font-semibold rounded-xl border border-gray-200 hover:bg-pink-100 transition text-sm">
+                            ① 머리를 풀어서 바람에 날리게 한다.
+                        </button>
+                        <button onclick="checkAnswer(3, true, this)" class="p-3 bg-white text-left font-semibold rounded-xl border border-gray-200 hover:bg-pink-100 transition text-sm">
+                            ② 머끈으로 머리를 단단하게 묶는다.
+                        </button>
+                    </div>
+                    <div id="q3Feedback" class="hidden mt-2 font-bold text-sm p-2 rounded-lg"></div>
+                </div>
+            </div>
+
+            <!-- Quiz Result Message -->
+            <div id="quizResult" class="hidden mt-6 p-5 bg-gradient-to-r from-yellow-100 via-pink-100 to-green-100 rounded-2xl border-2 border-pink-300 text-center shadow-md">
+                <span class="text-4xl">👑</span>
+                <h3 class="text-2xl font-bold text-gray-800 font-gaegu mt-1">우와! 안전 박사님 인정!</h3>
+                <p class="text-sm sm:text-base text-gray-700 font-semibold">모든 문제를 완료했어요. 이제 완벽한 안전 지킴이에요!</p>
+            </div>
+        </section>
+
+        <!-- Final Prominent Motto -->
+        <section class="bg-gradient-to-r from-brandOrange via-brandYellow to-brandGreen rounded-3xl p-6 sm:p-8 text-center shadow-xl border-4 border-yellow-400 relative overflow-hidden bounce-hover">
+            <div class="relative z-10 space-y-2">
+                <span class="bg-white/80 text-orange-600 font-extrabold text-xs sm:text-sm px-4 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                    오늘의 핵심 구호
+                </span>
+                <h2 class="text-2xl sm:text-4xl font-extrabold text-white font-gaegu drop-shadow-md">
+                    "안전은 챙기고! 재미는 더하고! 오늘 하루도 안전하게!"
+                </h2>
+                <p class="text-white font-bold text-sm sm:text-base opacity-90">
+                    우리 모두 약속을 지키며 즐겁게 실습해요! 🤙
+                </p>
+            </div>
+            <!-- Decorative Elements -->
+            <div class="absolute -bottom-10 -left-10 text-white opacity-20 text-8xl">🛡️</div>
+            <div class="absolute -top-10 -right-10 text-white opacity-20 text-8xl">✨</div>
+        </section>
+
+    </main>
+
+    <footer class="text-center text-xs text-gray-500 mt-10">
+        <p>초등학생을 위한 안전한 실습·체험 가이드북 ⓒ 2026</p>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // 1. Audio Speech Synthesis (TTS)
+        function readWelcomeText() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // Stop ongoing speech
+                const text = document.getElementById('welcomeText').innerText;
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'ko-KR';
+                utterance.rate = 0.9; // Slightly slower for kids
+                utterance.pitch = 1.1; // Friendly pitch
+                
+                const btn = document.getElementById('ttsBtn');
+                btn.classList.add('bg-orange-500');
+                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> 읽는 중...`;
+                
+                utterance.onend = function() {
+                    btn.classList.remove('bg-orange-500');
+                    btn.innerHTML = `<i class="fa-solid fa-volume-high"></i> 목소리 듣기`;
+                };
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('이 브라우저는 음성 재생을 지원하지 않아요.');
+            }
+        }
+
+        // 2. Checklist Toggle & Progress
+        function toggleCheck(id) {
+            const checkbox = document.getElementById(id);
+            checkbox.checked = !checkbox.checked;
+            updateChecklistProgress();
+        }
+
+        function updateChecklistProgress() {
+            const checkboxes = document.querySelectorAll('#checklistContainer .custom-checkbox');
+            let checkedCount = 0;
+            
+            checkboxes.forEach(cb => {
+                if (cb.checked) checkedCount++;
+            });
+
+            const progressText = document.getElementById('checklistProgressText');
+            progressText.innerText = `${checkedCount} / ${checkboxes.length} 완료`;
+
+            const banner = document.getElementById('checklistCompleteBanner');
+            if (checkedCount === checkboxes.length) {
+                banner.classList.remove('hidden');
+                progressText.classList.replace('text-orange-500', 'text-green-600');
+                progressText.classList.replace('bg-orange-50', 'bg-green-100');
+                
+                // Trigger Confetti Celebration
+                confetti({
+                    particleCount: 80,
+                    spread: 60,
+                    origin: { y: 0.6 }
+                });
+            } else {
+                banner.classList.add('hidden');
+            }
+        }
+
+        // 3. Tab Navigation
+        function switchTab(tabId) {
+            // Hide all tab contents
+            const contents = document.querySelectorAll('.tab-content');
+            contents.forEach(c => c.classList.remove('active'));
+
+            // Reset button styles
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => {
+                b.classList.remove('bg-brandBlue', 'text-white', 'border-blue-600');
+                b.classList.add('bg-gray-100', 'text-gray-600', 'border-gray-200');
+            });
+
+            // Activate target tab content
+            document.getElementById(tabId).classList.add('active');
+
+            // Style target button
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('bg-gray-100', 'text-gray-600', 'border-gray-200');
+            activeBtn.classList.add('bg-brandBlue', 'text-white', 'border-blue-600');
+        }
+
+        // 4. Interactive Quiz Logic
+        const quizStatus = { 1: false, 2: false, 3: false };
+
+        function checkAnswer(qNum, isCorrect, btnElement) {
+            const optionsContainer = document.getElementById(`q${qNum}Options`);
+            const feedback = document.getElementById(`q${qNum}Feedback`);
+            const buttons = optionsContainer.querySelectorAll('button');
+
+            // Disable buttons after answer
+            buttons.forEach(b => {
+                b.disabled = true;
+                b.classList.add('opacity-60', 'cursor-not-allowed');
+            });
+
+            feedback.classList.remove('hidden');
+
+            if (isCorrect) {
+                btnElement.classList.remove('opacity-60', 'bg-white');
+                btnElement.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                feedback.innerHTML = '⭕ 정답이에요! 참 잘했어요!';
+                feedback.className = 'mt-2 font-bold text-sm p-2 rounded-lg bg-green-100 text-green-700 border border-green-300';
+                quizStatus[qNum] = true;
+            } else {
+                btnElement.classList.remove('opacity-60', 'bg-white');
+                btnElement.classList.add('bg-red-100', 'border-red-400', 'text-red-800');
+                feedback.innerHTML = '❌ 다시 생각해 봐요! 정답은 다른 쪽이에요.';
+                feedback.className = 'mt-2 font-bold text-sm p-2 rounded-lg bg-red-100 text-red-700 border border-red-300';
+            }
+
+            // Check overall completion
+            if (Object.values(quizStatus).every(val => val === true)) {
+                document.getElementById('quizResult').classList.remove('hidden');
+                confetti({
+                    particleCount: 120,
+                    spread: 80,
+                    origin: { y: 0.7 }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
